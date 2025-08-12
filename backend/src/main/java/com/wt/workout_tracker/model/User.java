@@ -23,7 +23,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    private String passwordHash;
+    private String password;
 
     @Column(nullable = false)
     private String firstName;
