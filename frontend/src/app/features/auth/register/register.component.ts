@@ -46,11 +46,6 @@ export class RegisterComponent implements OnInit {
     }
     return null;
   }
-  get username() { return this.registerForm.get('username'); }
-  get password() { return this.registerForm.get('password'); }
-  get firstName() { return this.registerForm.get('firstName'); }
-  get lastName() { return this.registerForm.get('lastName'); }
-  get phoneNumber() { return this.registerForm.get('phoneNumber'); }
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
@@ -126,6 +121,13 @@ export class RegisterComponent implements OnInit {
     }
     return '';
   }
+
+  get username() { return this.registerForm.get('username'); }
+  get password() { return this.registerForm.get('password'); }
+  get firstName() { return this.registerForm.get('firstName'); }
+  get lastName() { return this.registerForm.get('lastName'); }
+  get phoneNumber() { return this.registerForm.get('phoneNumber'); }
+
 
   private getFieldDisplayName(fieldName: string): string {
     const displayNames: { [key: string]: string } = {
