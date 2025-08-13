@@ -7,13 +7,11 @@ public class LoginResponseDTO {
     private String accessToken;
     private String refreshToken;
     private String tokenType = "Bearer";
-    private Long expiresIn;
     private String username;
 
-    public LoginResponseDTO(String accessToken, String refreshToken, Long expiresIn, String username) {
+    public LoginResponseDTO(String accessToken, String refreshToken, String username) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.expiresIn = expiresIn;
         this.username = username;
     }
 }
