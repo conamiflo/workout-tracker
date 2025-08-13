@@ -48,12 +48,9 @@ public class AuthController {
         String accessToken = jwtUtil.generateToken(userDetails);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
 
-        long expirationTime = jwtUtil.extractExpiration(accessToken).getTime();
-
         return ResponseEntity.ok(new LoginResponseDTO(
                 accessToken,
                 refreshToken.getToken(),
-                expirationTime,
                 userDetails.getUsername()
         ));
     }
