@@ -1,6 +1,7 @@
 package com.wt.workout_tracker.controller;
 
 import com.wt.workout_tracker.dto.*;
+import com.wt.workout_tracker.exception.UserAlreadyExistsException;
 import com.wt.workout_tracker.model.RefreshToken;
 import com.wt.workout_tracker.model.User;
 import com.wt.workout_tracker.security.JwtUtil;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RequestMapping("/api/auth")
 @RestController
@@ -71,10 +73,18 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
-        User registeredUser = userService.registerUser(userRegistrationDTO);
-        UserResponseDTO userResponseDTO = new UserResponseDTO(registeredUser);
-        return new ResponseEntity<>(userResponseDTO, HttpStatus.CREATED);
+    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+        try {
+            User registeredUser = userService.registerUser(userRegistrationDTO);
+            UserResponseDTO userResponseDTO = new UserResponseDTO(registeredUser);
+            return new ResponseEntity<>(userResponseDTO, HttpStatus.CREATED);
+        } catch (UserAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "Registration failed"));
+        }
     }
 
     @PostMapping("/logout")

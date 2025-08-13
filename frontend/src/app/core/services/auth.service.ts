@@ -7,6 +7,8 @@ import {LoginRequest} from '../models/login-request.model';
 import {LoginResponse} from '../models/login-response.model';
 import {TokenRefreshRequest} from '../models/token-refresh-request.model';
 import {TokenRefreshResponse} from '../models/token-refresh-response.model';
+import {UserRegistrationRequest} from '../models/user-registration-request.model';
+import {UserResponse} from '../models/user-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -32,8 +34,8 @@ export class AuthService {
     );
   }
 
-  register(data: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/register`, data);
+  register(data: UserRegistrationRequest): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.API_URL}/register`, data);
   }
 
   logout(): void {
