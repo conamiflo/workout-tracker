@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {LoginResponse} from '../models/login-response.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -6,6 +7,12 @@ export class TokenStorageService {
   private readonly ACCESS_TOKEN_KEY = 'accessToken';
   private readonly REFRESH_TOKEN_KEY = 'refreshToken';
   private readonly USERNAME_KEY = 'username';
+
+  setAuthData(loginResponse: LoginResponse): void {
+    localStorage.setItem(this.ACCESS_TOKEN_KEY, loginResponse.accessToken);
+    localStorage.setItem(this.REFRESH_TOKEN_KEY, loginResponse.refreshToken);
+    localStorage.setItem(this.USERNAME_KEY, loginResponse.username);
+  }
 
   setAccessToken(token: string): void {
     localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
@@ -15,25 +22,10 @@ export class TokenStorageService {
     return localStorage.getItem(this.ACCESS_TOKEN_KEY);
   }
 
-  removeAccessToken(): void {
-    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
-  }
-
-  setRefreshToken(token: string): void {
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
-  }
-
   getRefreshToken(): string | null {
     return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
-  removeRefreshToken(): void {
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-  }
-
-  setUsername(username: string): void {
-    localStorage.setItem(this.USERNAME_KEY, username);
-  }
 
   getUsername(): string | null {
     return localStorage.getItem(this.USERNAME_KEY);

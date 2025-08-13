@@ -1,9 +1,18 @@
 import { Routes } from '@angular/router';
 import {LoginComponent} from './features/auth/login/login.component';
 import {RegisterComponent} from './features/auth/register/register.component';
+import {CreateWorkoutComponent} from './features/workouts/create-workout/create-workout.component';
+import {AuthGuard} from './core/guards/auth.guard';
+import {GuestGuard} from './core/guards/guest.guard';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent , canActivate: [GuestGuard]},
+  { path: 'register', component: RegisterComponent , canActivate: [GuestGuard]},
+  {
+    path: 'workouts/new',
+    component: CreateWorkoutComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: '**', redirectTo: '/login' }
 ];

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import { Router } from '@angular/router';
+import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service'; // Adjust path
 import { TokenStorageService } from '../../../core/services/token-storage.service'; // Adjust path
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -34,7 +34,20 @@ export class NavbarComponent implements OnInit {
   }
 
   signOut(): void {
-    this.authService.logout();
+      this.authService.logout().subscribe({
+        next: () => {
+          this.finishLogout();
+        },
+        error: (error) => {
+          console.error('Backend logout failed:', error);
+        }
+      });
+  }
+
+  private finishLogout(): void {
+    this.isAuthenticated = false;
+    this.username = '';
+    this.showMobileMenu = false;
     this.router.navigate(['/login']);
   }
 

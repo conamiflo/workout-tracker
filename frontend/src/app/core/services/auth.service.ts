@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import {catchError, Observable, of, tap} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {TokenStorageService} from './token-storage.service';
 import {LoginRequest} from '../models/login-request.model';
@@ -19,9 +19,7 @@ export class AuthService {
   login(data: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.API_URL}/login`, data).pipe(
       tap((res) => {
-        this.tokenService.setAccessToken(res.accessToken);
-        this.tokenService.setRefreshToken(res.refreshToken);
-        this.tokenService.setUsername(res.username);
+        this.tokenService.setAuthData(res);
       })
     );
   }
@@ -38,8 +36,16 @@ export class AuthService {
     return this.http.post<UserResponse>(`${this.API_URL}/register`, data);
   }
 
-  logout(): void {
-    this.tokenService.clear();
+  logout(): Observable<any> {
+    const refreshToken = this.tokenService.getRefreshToken();
+    return this.http.post(`${this.API_URL}/logout`, { refreshToken }).pipe(
+      tap(() => {
+        this.tokenService.clear();
+      }),
+      catchError((error) => {
+        this.tokenService.clear();
+        return of(null);
+      }))
   }
 
   isAuthenticated(): boolean {
