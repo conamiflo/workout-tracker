@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import {AuthService} from '../../../core/services/auth.service';
 import {UserRegistrationRequest} from '../../../core/models/user-registration-request.model';
 import {UserResponse} from '../../../core/models/user-response.model';
+import {SuccessPopupComponent} from '../../../shared/components/success-popup/success-popup.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SuccessPopupComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -98,13 +99,9 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  goToLogin(): void {
+  onPopupClose(): void {
     this.showSuccessPopup = false;
     this.router.navigate(['/login']);
-  }
-
-  closeSuccessPopup(): void {
-    this.showSuccessPopup = false;
   }
 
   navigateToLogin(): void {

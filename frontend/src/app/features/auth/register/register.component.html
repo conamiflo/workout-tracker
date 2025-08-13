@@ -192,3 +192,10 @@
     </form>
   </div>
 </div>
+
+<app-success-popup
+  [show]="showSuccessPopup"
+  [title]="'Registration Successful!'"
+  [message]="'Your account has been created successfully. You can now log in with your credentials.'"
+  (close)="onPopupClose()">
+</app-success-popup>
