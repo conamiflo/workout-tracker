@@ -3,7 +3,7 @@ package com.wt.workout_tracker.controller;
 import com.wt.workout_tracker.dto.UserRegistrationDTO;
 import com.wt.workout_tracker.dto.UserResponseDTO;
 import com.wt.workout_tracker.model.User;
-import com.wt.workout_tracker.service.UserService;
+import com.wt.workout_tracker.service.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    private final UserService userService;
+    private final IUserService userService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(IUserService userService){
         this.userService = userService;
     }
 

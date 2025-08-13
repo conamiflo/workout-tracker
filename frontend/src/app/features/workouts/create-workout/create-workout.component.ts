@@ -1,12 +1,19 @@
+// create-workout.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
+import {WorkoutService} from "../../../core/services/workout.service";
+import {ExerciseType} from "../../../core/models/exercise-type.model";
+import {CreateWorkoutDTO} from "../../../core/models/create-workout.model";
+import {Workout} from "../../../core/models/workout.model";
+import {TokenStorageService} from "../../../core/services/token-storage.service";
+import {SuccessPopupComponent} from "../../../shared/components/success-popup/success-popup.component";
 
 @Component({
   selector: 'app-create-workout',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SuccessPopupComponent],
   templateUrl: './create-workout.component.html',
   styleUrls: ['./create-workout.component.css']
 })
@@ -14,10 +21,15 @@ export class CreateWorkoutComponent implements OnInit {
   workoutForm!: FormGroup;
   isLoading = false;
   globalError = '';
+  showSuccessPopup = false;
+
+  exerciseTypes = Object.values(ExerciseType);
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
+      private fb: FormBuilder,
+      private router: Router,
+      private workoutService: WorkoutService,
+      private tokenService: TokenStorageService ,
   ) {}
 
   ngOnInit(): void {
@@ -28,8 +40,8 @@ export class CreateWorkoutComponent implements OnInit {
   private initializeForm(): void {
     this.workoutForm = this.fb.group({
       exerciseType: ['', [Validators.required]],
-      durationMinutes: ['', [Validators.required, Validators.min(1), Validators.max(1440)]],
-      calories: ['', [Validators.min(0), Validators.max(5000)]],
+      durationMinutes: ['', [Validators.required, Validators.min(1), Validators.max(600)]],
+      calories: ['', [Validators.min(0), Validators.max(3000)]],
       intensity: [5, [Validators.required, Validators.min(1), Validators.max(10)]],
       fatigue: [5, [Validators.required, Validators.min(1), Validators.max(10)]],
       performedAt: ['', [Validators.required]],
@@ -49,25 +61,36 @@ export class CreateWorkoutComponent implements OnInit {
     this.workoutForm.patchValue({ performedAt: defaultDateTime });
   }
 
-
-
   onSubmit(): void {
-    // if (this.workoutForm.valid) {
-    //   this.isLoading = true;
-    //   this.globalError = '';
-    //
-    //   const workoutData: WorkoutRequest = {
-    //     exerciseType: this.workoutForm.value.exerciseType,
-    //     durationMinutes: parseInt(this.workoutForm.value.durationMinutes),
-    //     calories: this.workoutForm.value.calories ? parseInt(this.workoutForm.value.calories) : undefined,
-    //     intensity: parseInt(this.workoutForm.value.intensity),
-    //     fatigue: parseInt(this.workoutForm.value.fatigue),
-    //     performedAt: new Date(this.workoutForm.value.performedAt).toISOString(),
-    //     notes: this.workoutForm.value.notes || undefined
-    //   };
-    // } else {
-    //   this.markFormGroupTouched();
-    // }
+    if (this.workoutForm.valid) {
+      this.isLoading = true;
+      this.globalError = '';
+
+      const workoutData: CreateWorkoutDTO = {
+        username: this.tokenService.getUsername() ?? '',
+        exerciseType: this.workoutForm.value.exerciseType as ExerciseType,
+        durationMinutes: parseInt(this.workoutForm.value.durationMinutes),
+        calories: this.workoutForm.value.calories ? parseInt(this.workoutForm.value.calories) : 0,
+        intensity: parseInt(this.workoutForm.value.intensity),
+        fatigue: parseInt(this.workoutForm.value.fatigue),
+        performedAt: new Date(this.workoutForm.value.performedAt).toISOString(),
+        notes: this.workoutForm.value.notes || ''
+      };
+
+      this.workoutService.createWorkout(workoutData).subscribe({
+        next: (workout: Workout) => {
+          this.isLoading = false;
+          this.showSuccessPopup = true;
+          this.resetForm();
+        },
+        error: (error: { error: { message: string; }; }) => {
+          this.globalError = error.error?.message || 'An error occurred while creating the workout';
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.markFormGroupTouched();
+    }
   }
 
   private markFormGroupTouched(): void {
@@ -99,11 +122,28 @@ export class CreateWorkoutComponent implements OnInit {
     }
     return '';
   }
+
+  onPopupClose(): void {
+    this.showSuccessPopup = false;
+    this.router.navigate(['/workouts/new']);
+  }
+
   get exerciseType() { return this.workoutForm.get('exerciseType'); }
   get durationMinutes() { return this.workoutForm.get('durationMinutes'); }
   get calories() { return this.workoutForm.get('calories'); }
   get performedAt() { return this.workoutForm.get('performedAt'); }
   get notes() { return this.workoutForm.get('notes'); }
+
+  getExerciseTypeLabel(type: ExerciseType): string {
+    const labels: { [key in ExerciseType]: string } = {
+      [ExerciseType.CARDIO]: 'Cardio',
+      [ExerciseType.STRENGTH]: 'Strength Training',
+      [ExerciseType.FLEXIBILITY]: 'Flexibility',
+      [ExerciseType.SPORTS]: 'Sports',
+      [ExerciseType.OTHER]: 'Other'
+    };
+    return labels[type];
+  }
 
   private getFieldDisplayName(fieldName: string): string {
     const displayNames: { [key: string]: string } = {
@@ -116,5 +156,23 @@ export class CreateWorkoutComponent implements OnInit {
       notes: 'Notes'
     };
     return displayNames[fieldName] || fieldName;
+  }
+
+  private resetForm(): void {
+    this.workoutForm.reset();
+
+    this.workoutForm.patchValue({
+      intensity: 5,
+      fatigue: 5
+    });
+
+    this.setDefaultDateTime();
+
+    Object.keys(this.workoutForm.controls).forEach(key => {
+      const control = this.workoutForm.get(key);
+      control?.setErrors(null);
+      control?.markAsUntouched();
+      control?.markAsPristine();
+    });
   }
 }

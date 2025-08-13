@@ -33,22 +33,20 @@
       <div class="form-group">
         <label for="exerciseType" class="form-label">Exercise Type</label>
         <div class="input-wrapper">
-          <select
-            id="exerciseType"
-            formControlName="exerciseType"
-            class="form-input form-select"
-            [ngClass]="{
-              'error': exerciseType?.invalid && exerciseType?.touched,
-              'valid': exerciseType?.valid && exerciseType?.touched
-            }"
-          >
-            <option value="" disabled>Select exercise type</option>
-            <option value="CARDIO">Cardio</option>
-            <option value="STRENGTH">Strength Training</option>
-            <option value="FLEXIBILITY">Flexibility</option>
-            <option value="SPORTS">Sports</option>
-            <option value="OTHER">Other</option>
-          </select>
+            <select
+                    id="exerciseType"
+                    formControlName="exerciseType"
+                    class="form-input form-select"
+                    [ngClass]="{
+                    'error': exerciseType?.invalid && exerciseType?.touched,
+                    'valid': exerciseType?.valid && exerciseType?.touched
+                    }"
+            >
+                <option value="" disabled>Select exercise type</option>
+                <option *ngFor="let type of exerciseTypes" [value]="type">
+                    {{ getExerciseTypeLabel(type) }}
+                </option>
+            </select>
           <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
           </svg>
@@ -242,3 +240,10 @@
     </form>
   </div>
 </div>
+
+<app-success-popup
+        [show]="showSuccessPopup"
+        [title]="'Successfully entered a workout!'"
+        [message]="'Your workout has been created successfully.'"
+        (close)="onPopupClose()">
+</app-success-popup>

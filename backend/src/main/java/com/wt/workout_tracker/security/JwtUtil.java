@@ -67,7 +67,6 @@ public class JwtUtil {
         return createToken(claims, userDetails.getUsername(), jwtExpirationMs);
     }
 
-    // New method for generating refresh token JWT
     public String generateRefreshToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("type", "refresh");

@@ -26,6 +26,9 @@ export class TokenStorageService {
     return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
+  setRefreshToken(refreshToken: string): void {
+      localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken);
+  }
 
   getUsername(): string | null {
     return localStorage.getItem(this.USERNAME_KEY);

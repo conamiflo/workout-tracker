@@ -1,12 +1,13 @@
 package com.wt.workout_tracker.controller;
 
 import com.wt.workout_tracker.dto.*;
+import com.wt.workout_tracker.exception.TokenRefreshException;
 import com.wt.workout_tracker.exception.UserAlreadyExistsException;
 import com.wt.workout_tracker.model.RefreshToken;
 import com.wt.workout_tracker.model.User;
 import com.wt.workout_tracker.security.JwtUtil;
-import com.wt.workout_tracker.service.RefreshTokenService;
-import com.wt.workout_tracker.service.UserService;
+import com.wt.workout_tracker.service.IRefreshTokenService;
+import com.wt.workout_tracker.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final UserService userService;
-    private final RefreshTokenService refreshTokenService;
+    private final IUserService userService;
+    private final IRefreshTokenService refreshTokenService;
 
     @Autowired
     public AuthController(com.wt.workout_tracker.service.impl.UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, com.wt.workout_tracker.service.impl.RefreshTokenService refreshTokenService){
@@ -60,7 +61,6 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequestDTO request) {
         String requestRefreshToken = request.getRefreshToken();
-
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
@@ -68,9 +68,8 @@ public class AuthController {
                     String token = jwtUtil.generateToken(new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>()));
                     return ResponseEntity.ok(new TokenRefreshResponseDTO(token, requestRefreshToken));
                 })
-                .orElseThrow(() -> new RuntimeException("Refresh token is not in database!"));
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "Invalid refresh token"));
     }
-
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
