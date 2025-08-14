@@ -1,6 +1,5 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <!-- Logo and App Name -->
     <div class="navbar-brand">
       <div class="navbar-logo">
         <img src="/logo.png" alt="WorkoutTracker Logo" class="logo-image" height="1024" width="1024">
@@ -8,13 +7,12 @@
       <span class="navbar-title">WorkoutTracker</span>
     </div>
 
-    <!-- Navigation Links (optional) -->
     <div class="navbar-nav">
+      <a routerLink="/progress" class="nav-link" routerLinkActive="active">Progress</a>
       <a routerLink="/workouts" class="nav-link" routerLinkActive="active">Workouts</a>
-      <a routerLink="/workouts/new" class="nav-link" routerLinkActive="active">New Workout</a>
+      <a routerLink="/new-workout" class="nav-link" routerLinkActive="active">New Workout</a>
     </div>
 
-    <!-- User Section -->
     <div class="navbar-user">
       <div class="user-info">
         <span class="user-name">John Doe</span>
@@ -35,7 +33,6 @@
       </button>
     </div>
 
-    <!-- Mobile Menu Toggle -->
     <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -45,10 +42,9 @@
     </button>
   </div>
 
-  <!-- Mobile Menu -->
   <div class="mobile-menu" [class.active]="showMobileMenu">
-    <a href="#" class="mobile-nav-link active" (click)="navigateTo('/dashboard')">Dashboard</a>
-    <a href="#" class="mobile-nav-link" (click)="navigateTo('/workouts')">Workouts</a>
+    <a href="#" class="mobile-nav-link active" (click)="navigateTo('/workouts')">Workouts </a>
+    <a href="#" class="mobile-nav-link" (click)="navigateTo('/workouts/new')">New Workout</a>
     <a href="#" class="mobile-nav-link" (click)="navigateTo('/progress')">Progress</a>
   </div>
 </nav>

@@ -30,4 +30,12 @@ export class WorkoutService {
     return this.http.delete<void>(`${this.API_URL}/${workoutId}/user/${username}`);
   }
 
+  getMonthlyProgress(username: string, year: number, month: number): Observable<MonthlySummary> {
+    const params = new HttpParams()
+      .set('year', year.toString())
+      .set('month', month.toString());
+
+    return this.http.get<MonthlySummary>(`${this.API_URL}/${username}/progress`, { params });
+  }
+
 }

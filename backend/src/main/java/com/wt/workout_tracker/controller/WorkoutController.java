@@ -1,6 +1,7 @@
 package com.wt.workout_tracker.controller;
 
 import com.wt.workout_tracker.dto.CreateWorkoutDTO;
+import com.wt.workout_tracker.dto.MonthlySummaryDTO;
 import com.wt.workout_tracker.dto.WorkoutDTO;
 import com.wt.workout_tracker.model.Workout;
 import com.wt.workout_tracker.service.impl.WorkoutService;
@@ -47,6 +48,18 @@ public class WorkoutController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{username}/progress")
+    public ResponseEntity<MonthlySummaryDTO> getMonthlyProgress(
+            @PathVariable String username,
+            @RequestParam int year,
+            @RequestParam int month) {
+        try {
+            MonthlySummaryDTO summary = workoutService.getMonthlyProgress(username, year, month);
+            return ResponseEntity.ok(summary);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
 
 }
