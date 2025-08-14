@@ -1,0 +1,167 @@
+<div class="progress-container">
+  <div class="progress-card">
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="page-title">Progress Tracking</h1>
+          <p class="page-subtitle">Track your workout progress by month</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Month Selector -->
+    <div class="month-selector">
+      <label for="monthSelect" class="month-label">Select Month</label>
+      <div class="month-input-wrapper">
+        <input
+          id="monthSelect"
+          type="month"
+          [(ngModel)]="selectedMonth"
+          (change)="onMonthChange()"
+          class="month-input"
+        >
+        <svg class="calendar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading progress data...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !isLoading" class="error-state">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
+      <h3>Oops! Something went wrong</h3>
+      <p>{{ error }}</p>
+      <button class="retry-button">Try Again</button>
+    </div>
+
+    <!-- Progress Data -->
+    <div *ngIf="monthlySummary && !isLoading && !error" class="progress-content">
+
+      <!-- Monthly Summary -->
+      <div class="monthly-summary">
+        <h2 class="summary-title">{{ getMonthDisplayName() }} Summary</h2>
+
+        <div class="summary-cards">
+          <div class="summary-card total-duration">
+            <div class="card-icon">⏱️</div>
+            <div class="card-content">
+              <h4>Total Duration</h4>
+              <div class="card-value">{{ formatDuration(monthlySummary.totalDuration) }}</div>
+            </div>
+          </div>
+
+          <div class="summary-card workout-count">
+            <div class="card-icon">🏋️</div>
+            <div class="card-content">
+              <h4>Total Workouts</h4>
+              <div class="card-value">{{ monthlySummary.totalWorkouts }}<span class="unit">sessions</span></div>
+            </div>
+          </div>
+
+          <div class="summary-card avg-intensity">
+            <div class="card-icon">🔥</div>
+            <div class="card-content">
+              <h4>Avg Intensity</h4>
+              <div class="card-value" [style.color]="getColor(monthlySummary.avgIntensity)">
+                {{ formatAverage(monthlySummary.avgIntensity) }}<span class="unit">/10</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-card avg-fatigue">
+            <div class="card-icon">😴</div>
+            <div class="card-content">
+              <h4>Avg Fatigue</h4>
+              <div class="card-value" [style.color]="getColor(monthlySummary.avgFatigue)">
+                {{ formatAverage(monthlySummary.avgFatigue) }}<span class="unit">/10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Breakdown -->
+      <div class="weekly-section">
+        <h3 class="weekly-title">Weekly Breakdown</h3>
+
+        <div *ngIf="monthlySummary.weeklyProgress.length === 0" class="no-data">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+          <h4>No workouts found</h4>
+          <p>Start logging your workouts to see weekly progress!</p>
+        </div>
+
+        <div class="weekly-cards" *ngIf="monthlySummary.weeklyProgress.length > 0">
+          <div
+            *ngFor="let week of monthlySummary.weeklyProgress"
+            class="week-card"
+            [class.no-workouts]="week.workoutCount === 0"
+          >
+            <div class="week-header">
+              <h4>Week {{ week.weekNumber }}</h4>
+              <span class="date-range">{{ week.dateRange }}</span>
+            </div>
+
+            <div class="week-metrics" *ngIf="week.workoutCount > 0">
+              <div class="metric">
+                <div class="metric-icon">⏱️</div>
+                <div class="metric-content">
+                  <span class="metric-label">Duration</span>
+                  <span class="metric-value">{{ formatDuration(week.totalDuration) }}</span>
+                </div>
+              </div>
+
+              <div class="metric">
+                <div class="metric-icon">🏋️</div>
+                <div class="metric-content">
+                  <span class="metric-label">Workouts</span>
+                  <span class="metric-value">{{ week.workoutCount }}</span>
+                </div>
+              </div>
+
+              <div class="metric">
+                <div class="metric-icon">🔥</div>
+                <div class="metric-content">
+                  <span class="metric-label">Intensity</span>
+                  <span class="metric-value" [style.color]="getColor(week.avgIntensity)">
+                    {{ formatAverage(week.avgIntensity) }}/10
+                  </span>
+                </div>
+              </div>
+
+              <div class="metric">
+                <div class="metric-icon">😴</div>
+                <div class="metric-content">
+                  <span class="metric-label">Fatigue</span>
+                  <span class="metric-value" [style.color]="getColor(week.avgFatigue)">
+                    {{ formatAverage(week.avgFatigue) }}/10
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="no-workouts-message" *ngIf="week.workoutCount === 0">
+              <span>No workouts this week</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

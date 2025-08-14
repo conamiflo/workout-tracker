@@ -28,6 +28,7 @@ export class AuthService {
     return this.http.post<TokenRefreshResponse>(`${this.API_URL}/refresh`, data).pipe(
       tap((res) => {
         this.tokenService.setAccessToken(res.accessToken);
+        this.tokenService.setRefreshToken(res.refreshToken);
       })
     );
   }

@@ -219,6 +219,7 @@
   font-family: 'Inter', sans-serif;
   resize: vertical;
   min-height: 100px;
+  box-sizing: border-box;
 }
 
 .form-textarea::placeholder {

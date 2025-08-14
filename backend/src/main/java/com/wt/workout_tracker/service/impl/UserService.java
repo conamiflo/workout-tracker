@@ -1,16 +1,18 @@
 package com.wt.workout_tracker.service.impl;
 
 import com.wt.workout_tracker.dto.UserRegistrationDTO;
+import com.wt.workout_tracker.dto.UserResponseDTO;
 import com.wt.workout_tracker.exception.ResourceNotFoundException;
 import com.wt.workout_tracker.exception.UserAlreadyExistsException;
 import com.wt.workout_tracker.model.User;
 import com.wt.workout_tracker.repository.UserRepository;
+import com.wt.workout_tracker.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements com.wt.workout_tracker.service.UserService {
+public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -40,8 +42,8 @@ public class UserService implements com.wt.workout_tracker.service.UserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User witn username: " + username + " not found"));
+    public UserResponseDTO getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User witn username: " + username + " not found"));
+        return new UserResponseDTO(user);
     }
 }

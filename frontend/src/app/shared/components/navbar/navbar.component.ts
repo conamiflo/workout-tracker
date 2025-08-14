@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service'; // Adjust path
@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   isAuthenticated = false;
   username = '';
   showMobileMenu = false;
+  showUserDropdown = false;
 
   constructor(
     private authService: AuthService,
@@ -63,4 +64,20 @@ export class NavbarComponent implements OnInit {
     this.router.navigate([route]);
     this.closeMobileMenu();
   }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    const target = event.target as HTMLElement;
+    const userProfile = document.querySelector('.user-profile');
+
+    if (userProfile && !userProfile.contains(target) && this.showUserDropdown) {
+      this.showUserDropdown = false;
+    }
+  }
+
+  toggleUserDropdown() {
+    this.showUserDropdown = !this.showUserDropdown;
+  }
+
+
 }

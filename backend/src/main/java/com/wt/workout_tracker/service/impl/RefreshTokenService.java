@@ -5,6 +5,7 @@ import com.wt.workout_tracker.model.User;
 import com.wt.workout_tracker.repository.RefreshTokenRepository;
 import com.wt.workout_tracker.repository.UserRepository;
 import com.wt.workout_tracker.security.JwtUtil;
+import com.wt.workout_tracker.service.IRefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class RefreshTokenService implements com.wt.workout_tracker.service.RefreshTokenService {
+public class RefreshTokenService implements IRefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
