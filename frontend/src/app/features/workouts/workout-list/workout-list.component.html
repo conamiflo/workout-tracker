@@ -6,90 +6,125 @@
       <p class="workout-subtitle">Track your fitness journey</p>
     </div>
 
-    <!-- Material Table -->
-    <div class="table-container">
-      <mat-table [dataSource]="dataSource" matSort class="workout-table">
-        <!-- Exercise Type Column -->
-        <ng-container matColumnDef="exerciseType">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Exercise Type</mat-header-cell>
-          <mat-cell *matCellDef="let workout" class="exercise-type">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading workouts...</p>
+    </div>
+
+    <!-- Workout Cards Grid -->
+    <div *ngIf="!isLoading && workouts.length > 0" class="workouts-grid">
+      <div *ngFor="let workout of workouts" class="workout-card-item">
+
+        <!-- Card Header -->
+        <div class="card-header">
+          <div class="exercise-info">
             <span class="exercise-badge" [attr.data-type]="workout.exerciseType.toLowerCase()">
               {{ workout.exerciseType }}
             </span>
-          </mat-cell>
-        </ng-container>
+            <span class="workout-date">{{ formatDate(workout.performedAt) }}</span>
+          </div>
 
-        <!-- Duration Column -->
-        <ng-container matColumnDef="durationMinutes">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Duration (min)</mat-header-cell>
-          <mat-cell *matCellDef="let workout" class="duration">{{ workout.durationMinutes }}</mat-cell>
-        </ng-container>
+          <button class="delete-btn" (click)="deleteWorkout(workout.id)" title="Delete workout">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+            </svg>
+          </button>
+        </div>
 
-        <!-- Calories Column -->
-        <ng-container matColumnDef="calories">
-          <mat-header-cell *matHeaderCellDef>Calories</mat-header-cell>
-          <mat-cell *matCellDef="let workout" class="calories">{{ workout.calories }}</mat-cell>
-        </ng-container>
+        <!-- Card Content -->
+        <div class="card-content">
 
-        <!-- Intensity Column -->
-        <ng-container matColumnDef="intensity">
-          <mat-header-cell *matHeaderCellDef>Intensity</mat-header-cell>
-          <mat-cell *matCellDef="let workout" class="intensity">
-            <span class="intensity-text">{{ workout.intensity }}/10</span>
-          </mat-cell>
-        </ng-container>
+          <!-- Primary Stats -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon duration">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="m12 6 0 6 4 2"></path>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value">{{ workout.durationMinutes }}</span>
+                <span class="stat-label">minutes</span>
+              </div>
+            </div>
 
-        <!-- Fatigue Column -->
-        <ng-container matColumnDef="fatigue">
-          <mat-header-cell *matHeaderCellDef>Fatigue</mat-header-cell>
-          <mat-cell *matCellDef="let workout" class="fatigue">
-            <span class="fatigue-text">{{ workout.fatigue }}/10</span>
-          </mat-cell>
-        </ng-container>
+            <div class="stat-card" *ngIf="workout.calories > 0">
+              <div class="stat-icon calories">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value">{{ workout.calories }}</span>
+                <span class="stat-label">calories</span>
+              </div>
+            </div>
 
-        <!-- Date Column -->
-        <ng-container matColumnDef="performedAt">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
-          <mat-cell *matCellDef="let workout" class="date">{{ formatDate(workout.performedAt) }}</mat-cell>
-        </ng-container>
+            <div class="stat-card">
+              <div class="stat-icon intensity">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value">{{ workout.intensity }}/10</span>
+                <span class="stat-label">intensity</span>
+              </div>
+            </div>
 
-        <!-- Notes Column -->
-        <ng-container matColumnDef="notes">
-          <mat-header-cell *matHeaderCellDef class="notes-column">Notes</mat-header-cell>
-          <mat-cell *matCellDef="let workout" class="notes">
-            <span class="notes-text" [title]="workout.notes || ''">
-              {{ workout.notes || 'No notes' }}
-            </span>
-          </mat-cell>
-        </ng-container>
+            <div class="stat-card">
+              <div class="stat-icon fatigue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="18" width="4" height="4"></rect>
+                  <rect x="8" y="14" width="4" height="8" opacity="0.5"></rect>
+                  <rect x="14" y="10" width="4" height="12" opacity="0.3"></rect>
+                  <rect x="20" y="6" width="4" height="16" opacity="0.1"></rect>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value">{{ workout.fatigue }}/10</span>
+                <span class="stat-label">fatigue</span>
+              </div>
+            </div>
+          </div>
 
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef class="actions-column">Actions</mat-header-cell>
-          <mat-cell *matCellDef="let workout" class="actions">
-            <button mat-button class="action-btn delete-btn" (click)="deleteWorkout(workout.id)">
-              <mat-icon>delete</mat-icon>
-              Delete
-            </button>
-          </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;" class="workout-row"></mat-row>
-      </mat-table>
-
-      <div *ngIf="dataSource.data.length === 0" class="empty-state">
-        <mat-icon class="empty-icon">fitness_center</mat-icon>
-        <h3>No workouts found</h3>
-        <p>Add some workouts to get started.</p>
+          <!-- Notes -->
+          <div class="notes-section">
+            <div class="notes-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <path d="M14 2v6h6"></path>
+                <path d="M16 13H8"></path>
+                <path d="M16 17H8"></path>
+                <path d="M10 9H8"></path>
+              </svg>
+              Notes
+            </div>
+            <p class="notes-text">{{ workout.notes }}</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="pagination-section" *ngIf="dataSource.data.length > 0">
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && workouts.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+        </svg>
+      </div>
+      <h3>No workouts found</h3>
+      <p>Add some workouts to get started with your fitness journey!</p>
+    </div>
+
+    <div class="pagination-section" *ngIf="!isLoading && workouts.length > 0">
       <mat-paginator
-        [pageSizeOptions]="[5, 10, 15]"
+        [pageSizeOptions]="[6, 12, 18]"
         [length]="totalItems"
         [pageSize]="pageSize"
+        [pageIndex]="currentPage"
         showFirstLastButtons
         (page)="onPageChange($event)"
         class="custom-paginator">

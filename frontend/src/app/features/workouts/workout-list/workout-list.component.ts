@@ -1,22 +1,18 @@
-import {Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Workout } from '../../../core/models/workout.model';
-import { WorkoutService} from '../../../core/services/workout.service';
+import { WorkoutService } from '../../../core/services/workout.service';
 import { TokenStorageService } from '../../../core/services/token-storage.service';
-import {Page} from '../../../core/models/page.model';
+import { Page } from '../../../core/models/page.model';
 
 @Component({
   selector: 'app-workout-list',
   standalone: true,
   imports: [
     CommonModule,
-    MatTableModule,
-    MatSortModule,
     MatPaginatorModule,
     MatButtonModule,
     MatIconModule
@@ -25,62 +21,47 @@ import {Page} from '../../../core/models/page.model';
   styleUrls: ['./workout-list.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class WorkoutListComponent implements OnInit, AfterViewInit {
-  @ViewChild(MatSort, {static: true}) sort: MatSort | undefined;
+export class WorkoutListComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private workoutService: WorkoutService,
     private tokenService: TokenStorageService
   ) {}
 
-  dataSource = new MatTableDataSource<Workout>();
 
   currentPage: number = 0;
-  pageSize: number = 5;
+  pageSize: number = 6;
   totalItems!: number;
   isLoading = false;
   currentUsername: string = '';
-
-  displayedColumns: string[] = [
-    'exerciseType',
-    'durationMinutes',
-    'calories',
-    'intensity',
-    'fatigue',
-    'performedAt',
-    'notes',
-    'actions'
-  ];
+  workouts: Workout[] = [];
 
   ngOnInit(): void {
     this.currentUsername = this.tokenService.getUsername() || '';
     this.fetchWorkouts(this.currentPage, this.pageSize);
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort!;
-    this.fetchWorkouts(this.currentPage, this.pageSize);
-  }
-
-  private fetchWorkouts(currentPage: number = 0, pageSize: number = 10): void {
+  private fetchWorkouts(currentPage: number = 0, pageSize: number = 6): void {
     this.isLoading = true;
     this.workoutService.getUserWorkouts(this.currentUsername, currentPage, pageSize)
       .subscribe({
         next: (response: Page<Workout>) => {
-          this.dataSource.data = response.content;
+          this.workouts = this.workouts = [...response.content];
           this.totalItems = response.totalElements;
           this.isLoading = false;
+          console.log('Fetched workouts:', response);
         },
         error: (error) => {
           console.error('Error loading workouts:', error);
-          this.dataSource.data = [];
+          this.workouts = [];
           this.totalItems = 0;
           this.isLoading = false;
         }
       });
   }
 
-  onPageChange(event: any): void {
+  onPageChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
     this.fetchWorkouts(this.currentPage, this.pageSize);
@@ -94,9 +75,12 @@ export class WorkoutListComponent implements OnInit, AfterViewInit {
       this.workoutService.deleteWorkout(workoutId, this.currentUsername)
         .subscribe({
           next: () => {
-            this.fetchWorkouts(this.currentPage, this.pageSize);
+            const maxPage = Math.max(0, Math.ceil((this.totalItems - 1) / this.pageSize) - 1);
+            const targetPage = Math.min(this.currentPage, maxPage);
+            this.fetchWorkouts(targetPage, this.pageSize);
           },
           error: (error) => {
+            console.error('Error deleting workout:', error);
             this.isLoading = false;
           }
         });
@@ -113,5 +97,4 @@ export class WorkoutListComponent implements OnInit, AfterViewInit {
       minute: '2-digit'
     });
   }
-
 }
