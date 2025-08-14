@@ -100,6 +100,12 @@ export class CreateWorkoutComponent implements OnInit {
     });
   }
 
+  getCurrentDateTime(): string {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    return now.toISOString().slice(0, 16);
+  }
+
   goBack(): void {
     this.router.navigate(['/workouts']);
   }

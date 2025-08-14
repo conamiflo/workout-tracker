@@ -94,11 +94,9 @@ export class WorkoutListComponent implements OnInit, AfterViewInit {
       this.workoutService.deleteWorkout(workoutId, this.currentUsername)
         .subscribe({
           next: () => {
-            console.log('Workout deleted successfully');
             this.fetchWorkouts(this.currentPage, this.pageSize);
           },
           error: (error) => {
-            console.error('Error deleting workout:', error);
             this.isLoading = false;
           }
         });
@@ -116,9 +114,4 @@ export class WorkoutListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Optional: Refresh method
-  refresh(): void {
-    this.currentPage = 0;
-    this.fetchWorkouts(this.currentPage, this.pageSize);
-  }
 }
