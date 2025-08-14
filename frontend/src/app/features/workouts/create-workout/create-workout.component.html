@@ -42,7 +42,6 @@
                     'valid': exerciseType?.valid && exerciseType?.touched
                     }"
             >
-                <option value="" disabled>Select exercise type</option>
                 <option *ngFor="let type of exerciseTypes" [value]="type">
                     {{ getExerciseTypeLabel(type) }}
                 </option>

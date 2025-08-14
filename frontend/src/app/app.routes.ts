@@ -4,6 +4,7 @@ import {RegisterComponent} from './features/auth/register/register.component';
 import {CreateWorkoutComponent} from './features/workouts/create-workout/create-workout.component';
 import {AuthGuard} from './core/guards/auth.guard';
 import {GuestGuard} from './core/guards/guest.guard';
+import {WorkoutListComponent} from './features/workouts/workout-list/workout-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -12,6 +13,11 @@ export const routes: Routes = [
   {
     path: 'workouts/new',
     component: CreateWorkoutComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'workouts',
+    component: WorkoutListComponent,
     canActivate: [AuthGuard]
   },
   { path: '**', redirectTo: '/login' }

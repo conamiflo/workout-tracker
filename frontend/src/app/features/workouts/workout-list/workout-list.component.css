@@ -1,0 +1,445 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.workout-container {
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.workout-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.workout-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.12),
+    0 6px 24px rgba(0, 0, 0, 0.06);
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.workout-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+  padding: 0.25rem 0;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #1f2937 0%, #4facfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.workout-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 400;
+}
+
+.table-container {
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 2rem;
+  background: #ffffff;
+}
+
+.workout-table {
+  font-family: 'Inter', sans-serif;
+}
+
+.workout-table .mat-mdc-table {
+  background: transparent;
+}
+
+.workout-table .mat-mdc-header-row {
+  background: #f9fafb;
+  height: auto;
+}
+
+.workout-table .mat-mdc-header-cell {
+  background: transparent;
+  padding: 1rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #e5e7eb;
+  font-family: 'Inter', sans-serif;
+}
+
+.workout-table .mat-mdc-header-cell.mat-sort-header-sorted {
+  color: #4facfe;
+}
+
+.workout-table .mat-mdc-row {
+  height: auto;
+  transition: all 0.2s ease;
+}
+
+.workout-table .mat-mdc-row:hover {
+  background: #f9fafb !important;
+}
+
+.workout-table .mat-mdc-cell {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.875rem;
+  color: #1f2937;
+  font-family: 'Inter', sans-serif;
+}
+
+.workout-table .mat-sort-header-arrow {
+  color: #4facfe;
+}
+
+.exercise-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.exercise-badge[data-type="cardio"] {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.exercise-badge[data-type="strength"] {
+  background: #f0f9ff;
+  color: #0284c7;
+}
+
+.exercise-badge[data-type="flexibility"] {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.exercise-badge[data-type="sports"] {
+  background: #fefce8;
+  color: #ca8a04;
+}
+
+.exercise-badge[data-type="other"] {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.intensity-text, .fatigue-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.notes-text {
+  max-width: 150px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notes-column {
+  max-width: 180px;
+}
+
+.actions-column {
+  min-width: 120px;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-btn.mat-mdc-button {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 8px !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  min-height: 32px;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.action-btn.mat-mdc-button .mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.action-btn.mat-mdc-button .mat-mdc-button-persistent-ripple {
+  border-radius: 8px;
+}
+
+.action-btn.delete-btn.mat-mdc-button {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.action-btn.delete-btn.mat-mdc-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+}
+
+.empty-state .empty-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.pagination-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.custom-paginator {
+  background: transparent !important;
+  font-family: 'Inter', sans-serif !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 1rem !important;
+}
+
+.custom-paginator * {
+  background: transparent !important;
+}
+
+.custom-paginator .mat-mdc-paginator {
+  background: transparent !important;
+  color: #374151 !important;
+  font-family: 'Inter', sans-serif !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-paginator .mat-mdc-paginator-container,
+.custom-paginator .mat-mdc-paginator-outer-container,
+.custom-paginator .mat-mdc-paginator-range-actions {
+  background: transparent !important;
+}
+
+.custom-paginator .mat-mdc-paginator-page-size-label {
+  color: #6b7280 !important;
+  font-size: 0.875rem !important;
+  margin-right: 0.5rem !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.custom-paginator .mat-mdc-select {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 6px !important;
+  padding: 0.25rem 0.5rem !important;
+  margin: 0 0.75rem !important;
+  min-height: 32px !important;
+  width: 60px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.custom-paginator .mat-mdc-select .mat-mdc-select-trigger {
+  background: white !important;
+  border: none !important;
+  padding: 0 !important;
+  min-height: 24px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.custom-paginator .mat-mdc-select .mat-mdc-select-value {
+  color: #374151 !important;
+  font-size: 0.875rem !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.custom-paginator .mat-mdc-select .mat-mdc-select-arrow {
+  color: #6b7280 !important;
+}
+
+.custom-paginator .mat-mdc-paginator-range-label {
+  color: #6b7280 !important;
+  font-size: 0.875rem !important;
+  margin: 0 1rem !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.custom-paginator .mat-mdc-icon-button {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 6px !important;
+  width: 36px !important;
+  height: 36px !important;
+  margin: 0 0.125rem !important;
+  color: #374151 !important;
+  transition: all 0.2s ease !important;
+}
+
+.custom-paginator .mat-mdc-icon-button:hover:not([disabled]) {
+  background: #f9fafb !important;
+}
+
+.custom-paginator .mat-mdc-icon-button[disabled] {
+  background: transparent !important;
+  color: #d1d5db !important;
+  cursor: not-allowed !important;
+}
+
+.custom-paginator .mat-mdc-icon-button .mat-icon {
+  color: inherit !important;
+  font-size: 18px !important;
+}
+
+.custom-paginator .mat-mdc-form-field {
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: auto !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.custom-paginator .mat-mdc-text-field-wrapper {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-height: auto !important;
+}
+
+.custom-paginator .mat-mdc-form-field-outline,
+.custom-paginator .mat-mdc-form-field-outline-start,
+.custom-paginator .mat-mdc-form-field-outline-notch,
+.custom-paginator .mat-mdc-form-field-outline-end,
+.custom-paginator .mdc-notched-outline,
+.custom-paginator .mdc-notched-outline__leading,
+.custom-paginator .mdc-notched-outline__notch,
+.custom-paginator .mdc-notched-outline__trailing {
+  display: none !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.custom-paginator .mat-mdc-button-persistent-ripple,
+.custom-paginator .mat-ripple,
+.custom-paginator .mat-mdc-button-ripple {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .workout-container {
+    padding: 1rem;
+  }
+
+  .workout-card {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .workout-table .mat-mdc-header-cell,
+  .workout-table .mat-mdc-cell {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .notes-text {
+    max-width: 100px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .action-btn.mat-mdc-button {
+    padding: 0.375rem 0.5rem !important;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .workout-title {
+    font-size: 1.75rem;
+  }
+
+  .workout-table .mat-mdc-header-cell,
+  .workout-table .mat-mdc-cell {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .notes-column {
+    display: none;
+  }
+
+  .actions-column {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .workout-container {
+    padding: 0.5rem;
+  }
+
+  .workout-card {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .workout-title {
+    font-size: 1.5rem;
+  }
+
+  .table-container {
+    border-radius: 8px;
+  }
+
+  .workout-table .mat-column-calories,
+  .workout-table .mat-column-intensity,
+  .workout-table .mat-column-fatigue {
+    display: none;
+  }
+}

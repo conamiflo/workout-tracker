@@ -1,0 +1,99 @@
+<div class="workout-container">
+  <div class="workout-card">
+    <!-- Header -->
+    <div class="header-section">
+      <h2 class="workout-title">Workout History</h2>
+      <p class="workout-subtitle">Track your fitness journey</p>
+    </div>
+
+    <!-- Material Table -->
+    <div class="table-container">
+      <mat-table [dataSource]="dataSource" matSort class="workout-table">
+        <!-- Exercise Type Column -->
+        <ng-container matColumnDef="exerciseType">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Exercise Type</mat-header-cell>
+          <mat-cell *matCellDef="let workout" class="exercise-type">
+            <span class="exercise-badge" [attr.data-type]="workout.exerciseType.toLowerCase()">
+              {{ workout.exerciseType }}
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Duration Column -->
+        <ng-container matColumnDef="durationMinutes">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Duration (min)</mat-header-cell>
+          <mat-cell *matCellDef="let workout" class="duration">{{ workout.durationMinutes }}</mat-cell>
+        </ng-container>
+
+        <!-- Calories Column -->
+        <ng-container matColumnDef="calories">
+          <mat-header-cell *matHeaderCellDef>Calories</mat-header-cell>
+          <mat-cell *matCellDef="let workout" class="calories">{{ workout.calories }}</mat-cell>
+        </ng-container>
+
+        <!-- Intensity Column -->
+        <ng-container matColumnDef="intensity">
+          <mat-header-cell *matHeaderCellDef>Intensity</mat-header-cell>
+          <mat-cell *matCellDef="let workout" class="intensity">
+            <span class="intensity-text">{{ workout.intensity }}/10</span>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Fatigue Column -->
+        <ng-container matColumnDef="fatigue">
+          <mat-header-cell *matHeaderCellDef>Fatigue</mat-header-cell>
+          <mat-cell *matCellDef="let workout" class="fatigue">
+            <span class="fatigue-text">{{ workout.fatigue }}/10</span>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="performedAt">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+          <mat-cell *matCellDef="let workout" class="date">{{ formatDate(workout.performedAt) }}</mat-cell>
+        </ng-container>
+
+        <!-- Notes Column -->
+        <ng-container matColumnDef="notes">
+          <mat-header-cell *matHeaderCellDef class="notes-column">Notes</mat-header-cell>
+          <mat-cell *matCellDef="let workout" class="notes">
+            <span class="notes-text" [title]="workout.notes || ''">
+              {{ workout.notes || 'No notes' }}
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef class="actions-column">Actions</mat-header-cell>
+          <mat-cell *matCellDef="let workout" class="actions">
+            <button mat-button class="action-btn delete-btn" (click)="deleteWorkout(workout.id)">
+              <mat-icon>delete</mat-icon>
+              Delete
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" class="workout-row"></mat-row>
+      </mat-table>
+
+      <div *ngIf="dataSource.data.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">fitness_center</mat-icon>
+        <h3>No workouts found</h3>
+        <p>Add some workouts to get started.</p>
+      </div>
+    </div>
+
+    <div class="pagination-section" *ngIf="dataSource.data.length > 0">
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 15]"
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        showFirstLastButtons
+        (page)="onPageChange($event)"
+        class="custom-paginator">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

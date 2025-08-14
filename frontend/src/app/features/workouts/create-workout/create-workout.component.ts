@@ -125,7 +125,7 @@ export class CreateWorkoutComponent implements OnInit {
 
   onPopupClose(): void {
     this.showSuccessPopup = false;
-    this.router.navigate(['/workouts/new']);
+    this.router.navigate(['/workouts']);
   }
 
   get exerciseType() { return this.workoutForm.get('exerciseType'); }
