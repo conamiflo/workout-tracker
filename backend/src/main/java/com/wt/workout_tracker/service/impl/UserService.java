@@ -1,6 +1,7 @@
 package com.wt.workout_tracker.service.impl;
 
 import com.wt.workout_tracker.dto.UserRegistrationDTO;
+import com.wt.workout_tracker.dto.UserResponseDTO;
 import com.wt.workout_tracker.exception.ResourceNotFoundException;
 import com.wt.workout_tracker.exception.UserAlreadyExistsException;
 import com.wt.workout_tracker.model.User;
@@ -41,8 +42,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User witn username: " + username + " not found"));
+    public UserResponseDTO getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User witn username: " + username + " not found"));
+        return new UserResponseDTO(user);
     }
 }

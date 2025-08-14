@@ -6,6 +6,7 @@ import {AuthGuard} from './core/guards/auth.guard';
 import {GuestGuard} from './core/guards/guest.guard';
 import {WorkoutListComponent} from './features/workouts/workout-list/workout-list.component';
 import {ProgressTrackingComponent} from './features/workouts/progress-tracking/progress-tracking.component';
+import {ProfileComponent} from './features/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -24,6 +25,11 @@ export const routes: Routes = [
   {
     path: 'progress',
     component: ProgressTrackingComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
     canActivate: [AuthGuard]
   },
   { path: '**', redirectTo: '/login' }
