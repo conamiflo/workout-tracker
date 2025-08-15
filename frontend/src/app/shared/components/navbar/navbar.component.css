@@ -22,12 +22,12 @@
   height: 70px;
 }
 
-/* Brand Section */
 .navbar-brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .navbar-logo {
