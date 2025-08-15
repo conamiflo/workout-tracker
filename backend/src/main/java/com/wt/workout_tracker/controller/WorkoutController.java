@@ -53,13 +53,8 @@ public class WorkoutController {
             @PathVariable String username,
             @RequestParam int year,
             @RequestParam int month) {
-        try {
-            MonthlySummaryDTO summary = workoutService.getMonthlyProgress(username, year, month);
-            return ResponseEntity.ok(summary);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
+        MonthlySummaryDTO summary = workoutService.getMonthlyProgress(username, year, month);
+        return ResponseEntity.ok(summary);
     }
-
-
 }
