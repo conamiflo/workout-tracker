@@ -67,8 +67,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             User user = new User();
             String firstName = faker.name().firstName();
             String lastName = faker.name().lastName();
-
-            user.setUsername(generateUsername(firstName, lastName, i));
+            user.setUsername(String.format("user%d", i + 1));
             user.setPassword(passwordEncoder.encode("password"));
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -109,12 +108,6 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         workoutRepository.saveAll(workouts);
         logger.info("Workouts seeded successfully");
-    }
-
-    private String generateUsername(String firstName, String lastName, int index) {
-        String baseUsername = (firstName.toLowerCase() + "." + lastName.toLowerCase())
-                .replaceAll("[^a-zA-Z0-9.]", "");
-        return index > 0 ? baseUsername + (index + 1) : baseUsername;
     }
 
     private String generatePhoneNumber() {
@@ -159,7 +152,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     private LocalDateTime generateWorkoutTime() {
         LocalDateTime now = LocalDateTime.now();
-        long randomDays = faker.number().numberBetween(0, 120);
+        long randomDays = faker.number().numberBetween(0, 60);
         int hour = faker.number().numberBetween(6, 22);
         int minute = faker.options().option(0, 15, 30, 45);
 

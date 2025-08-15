@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          if (error.status === 401) {
+          if (error.status === 401 || error.status === 403) {
             this.globalError = 'Invalid username or password';
           } else if (error.status === 400) {
             this.globalError = 'Please check your input and try again';
