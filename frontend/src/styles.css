@@ -212,3 +212,67 @@ img, svg {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   ANGULAR MATERIAL DIALOG OVERRIDES
+   ========================================================================== */
+
+/* Dialog backdrop/overlay */
+.cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1 !important;
+}
+
+/* Dialog container */
+.mat-mdc-dialog-container {
+  background: var(--bg-white) !important;
+  border-radius: var(--radius-2xl) !important;
+  box-shadow: var(--shadow-xl) !important;
+  border: 1px solid var(--border-light) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: var(--radius-2xl) !important;
+  padding: 0 !important;
+}
+
+/* Dialog animations */
+.mat-mdc-dialog-container {
+  animation: dialogEnter var(--transition-normal) ease-out !important;
+}
+
+@keyframes dialogEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Custom dialog panel classes */
+.custom-dialog-container .mat-mdc-dialog-container {
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+}
+
+/* Remove default Material spacing */
+.mat-mdc-dialog-content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.mat-mdc-dialog-actions {
+  padding: 0 !important;
+  margin: 0 !important;
+}

@@ -132,3 +132,9 @@
     </div>
   </div>
 </div>
+<app-success-popup
+  [show]="showSuccessPopup"
+  [title]="'Successfully deleted a workout!'"
+  [message]="'Your workout has been successfully deleted.'"
+  (close)="onPopupClose()">
+</app-success-popup>

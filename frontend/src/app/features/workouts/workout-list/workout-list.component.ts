@@ -7,6 +7,13 @@ import { Workout } from '../../../core/models/workout.model';
 import { WorkoutService } from '../../../core/services/workout.service';
 import { TokenStorageService } from '../../../core/services/token-storage.service';
 import { Page } from '../../../core/models/page.model';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {
+  ConfirmationDialogComponent,
+  ConfirmationDialogData
+} from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import {SuccessPopupComponent} from '../../../shared/components/success-popup/success-popup.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-workout-list',
@@ -15,7 +22,9 @@ import { Page } from '../../../core/models/page.model';
     CommonModule,
     MatPaginatorModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule,
+    SuccessPopupComponent,
   ],
   templateUrl: './workout-list.component.html',
   styleUrls: ['./workout-list.component.css'],
@@ -26,7 +35,9 @@ export class WorkoutListComponent implements OnInit {
 
   constructor(
     private workoutService: WorkoutService,
-    private tokenService: TokenStorageService
+    private tokenService: TokenStorageService,
+    private dialog: MatDialog,
+    private router: Router,
   ) {}
 
 
@@ -35,6 +46,7 @@ export class WorkoutListComponent implements OnInit {
   totalItems!: number;
   isLoading = false;
   currentUsername: string = '';
+  showSuccessPopup = false;
   workouts: Workout[] = [];
 
   ngOnInit(): void {
@@ -68,23 +80,49 @@ export class WorkoutListComponent implements OnInit {
   }
 
   deleteWorkout(workoutId: string): void {
-    const confirmDelete = confirm('Are you sure you want to delete this workout?');
-    if (confirmDelete) {
-      this.isLoading = true;
+    const dialogData: ConfirmationDialogData = {
+      title: 'Delete Workout',
+      message: 'Are you sure you want to delete this workout? This action cannot be undone.',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      type: 'danger'
+    };
 
-      this.workoutService.deleteWorkout(workoutId, this.currentUsername)
-        .subscribe({
-          next: () => {
-            const maxPage = Math.max(0, Math.ceil((this.totalItems - 1) / this.pageSize) - 1);
-            const targetPage = Math.min(this.currentPage, maxPage);
-            this.fetchWorkouts(targetPage, this.pageSize);
-          },
-          error: (error) => {
-            console.error('Error deleting workout:', error);
-            this.isLoading = false;
-          }
-        });
-    }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '450px',
+      data: dialogData,
+      disableClose: true,
+      panelClass: 'custom-dialog-container'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.performDelete(workoutId);
+      }
+    });
+  }
+
+  private performDelete(workoutId: string): void {
+    this.isLoading = true;
+
+    this.workoutService.deleteWorkout(workoutId, this.currentUsername)
+      .subscribe({
+        next: () => {
+          const maxPage = Math.max(0, Math.ceil((this.totalItems - 1) / this.pageSize) - 1);
+          const targetPage = Math.min(this.currentPage, maxPage);
+          this.fetchWorkouts(targetPage, this.pageSize);
+          this.showSuccessPopup = true;
+        },
+        error: (error) => {
+          console.error('Error deleting workout:', error);
+          this.isLoading = false;
+        }
+      });
+  }
+
+  onPopupClose(): void {
+    this.showSuccessPopup = false;
+    this.router.navigate(['/workouts']);
   }
 
   formatDate(dateString: string): string {
