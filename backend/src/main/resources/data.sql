@@ -16,7 +16,7 @@ INSERT INTO workouts (id, user_id, exercise_type, duration_minutes, calories, in
 ('650e8400-e29b-41d4-a716-446655440008', '550e8400-e29b-41d4-a716-446655440001', 'CARDIO', 40, 380, 7, 5, 'Early morning jog to beat the heat. Listened to new podcast.', '2025-08-05 06:30:00'),
 ('650e8400-e29b-41d4-a716-446655440009', '550e8400-e29b-41d4-a716-446655440001', 'STRENGTH', 65, 260, 8, 6, 'Full body workout. Air conditioning broken, tough session!', '2025-08-03 18:30:00'),
 ('650e8400-e29b-41d4-a716-446655440010', '550e8400-e29b-41d4-a716-446655440001', 'FLEXIBILITY', 25, 70, 4, 2, 'Stretching routine. Preparing for tomorrows strength training.', '2025-08-02 18:00:00'),
-('650e8400-e29b-41d4-a716-446655440011', '550e8400-e29b-41d4-a716-446655440001', 'CARDIO', 50, 460, 8, 6, 'High intensity interval training. Summer cutting phase in progress.', '2025-07-30 07:30:00'),
+('650e8400-e29b-41d4-a716-446655440011', D'550e8400-e29b-41d4-a716-446655440001', 'CARDIO', 50, 460, 8, 6, 'High intensity interval training. Summer cutting phase in progress.', '2025-07-30 07:30:00'),
 ('650e8400-e29b-41d4-a716-446655440012', '550e8400-e29b-41d4-a716-446655440001', 'STRENGTH', 70, 290, 9, 7, 'Deadlift day! Hit new PR of 120kg. Feeling stronger than ever.', '2025-07-28 19:00:00'),
 ('650e8400-e29b-41d4-a716-446655440013', '550e8400-e29b-41d4-a716-446655440001', 'SPORTS', 60, 350, 6, 5, 'Tennis with colleague. Hot day, took many water breaks.', '2025-07-26 16:00:00'),
 ('650e8400-e29b-41d4-a716-446655440014', '550e8400-e29b-41d4-a716-446655440001', 'CARDIO', 30, 280, 5, 3, 'Light swimming session. Perfect for hot summer day.', '2025-07-24 17:00:00'),
