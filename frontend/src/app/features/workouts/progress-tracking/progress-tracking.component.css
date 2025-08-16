@@ -1,0 +1,443 @@
+.progress-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-white);
+  padding: var(--spacing-lg);
+  font-family: var(--font-family);
+}
+
+.progress-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-4xl);
+  padding: var(--spacing-4xl);
+  width: 100%;
+  max-width: 1100px;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-normal);
+}
+
+.progress-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Header Section */
+.header-section {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.header-text {
+  flex: 1;
+}
+
+.page-title {
+  font-size: var(--font-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark);
+  margin: 0 0 var(--spacing-xs) 0;
+  background: var(--text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-subtitle {
+  font-size: var(--font-base);
+  color: var(--text-muted);
+  margin: 0;
+  font-weight: var(--font-weight-normal);
+}
+
+/* Month Selector */
+.month-selector {
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-2xl);
+  margin-bottom: var(--spacing-3xl);
+}
+
+.month-label {
+  display: block;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-medium);
+  margin-bottom: var(--spacing-md);
+}
+
+.month-input-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.month-input {
+  padding: 0.875rem var(--spacing-lg) 0.875rem var(--spacing-5xl);
+  background: var(--bg-light);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  color: var(--text-dark);
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-family);
+  min-width: 200px;
+  transition: var(--transition-normal);
+  outline: none;
+}
+
+.month-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+  background: var(--bg-white);
+}
+
+.calendar-icon {
+  position: absolute;
+  left: var(--spacing-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Loading State */
+.loading-state {
+  text-align: center;
+  padding: var(--spacing-5xl) var(--spacing-lg);
+  color: var(--text-muted);
+}
+
+.loading-state p {
+  margin: 0;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-normal);
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-light);
+  border-top: 2px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto var(--spacing-lg);
+}
+
+/* Error State */
+.error-state {
+  text-align: center;
+  padding: var(--spacing-5xl) var(--spacing-lg);
+  color: var(--text-muted);
+}
+
+.error-state svg {
+  color: var(--error);
+  margin-bottom: var(--spacing-lg);
+}
+
+.error-state h3 {
+  color: var(--text-dark);
+  margin: 0 0 var(--spacing-sm) 0;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-xl);
+}
+
+.error-state p {
+  margin: 0 0 var(--spacing-2xl) 0;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-normal);
+}
+
+.retry-button {
+  padding: 0.875rem var(--spacing-2xl);
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  border-radius: var(--radius-xl);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  font-family: var(--font-family);
+  font-size: var(--font-base);
+  box-shadow: var(--shadow-primary);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.retry-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-primary-lg);
+  background: var(--primary-gradient-hover);
+}
+
+/* Monthly Summary */
+.monthly-summary {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.summary-title {
+  font-size: var(--font-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-dark);
+  margin: 0 0 var(--spacing-sm) 0;
+  background: var(--text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.summary-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  transition: var(--transition-normal);
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.summary-card.total-duration { border-left: 4px solid var(--primary); }
+.summary-card.workout-count { border-left: 4px solid var(--success); }
+.summary-card.avg-intensity { border-left: 4px solid var(--warning); }
+.summary-card.avg-fatigue { border-left: 4px solid #ef4444; }
+
+.card-icon {
+  font-size: var(--font-2xl);
+  filter: grayscale(20%);
+}
+
+.card-content h4 {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 var(--spacing-xs) 0;
+  font-weight: var(--font-weight-medium);
+}
+
+.card-value {
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark);
+}
+
+.unit {
+  font-size: var(--font-sm);
+  color: var(--text-muted);
+  font-weight: var(--font-weight-normal);
+  margin-left: var(--spacing-xs);
+}
+
+/* Weekly Section */
+.weekly-section {
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-2xl);
+}
+
+.weekly-title {
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-medium);
+  margin: 0 0 var(--spacing-2xl) 0;
+  background: linear-gradient(135deg, var(--text-medium) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.no-data {
+  text-align: center;
+  padding: var(--spacing-3xl);
+  color: var(--text-muted);
+}
+
+.no-data svg {
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.5;
+}
+
+.no-data h4 {
+  color: var(--text-dark);
+  margin: 0 0 var(--spacing-sm) 0;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-lg);
+}
+
+.no-data p {
+  margin: 0;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-normal);
+}
+
+.weekly-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.week-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  transition: var(--transition-normal);
+}
+
+.week-card:hover:not(.no-workouts) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.week-card.no-workouts {
+  opacity: 0.6;
+  background: var(--bg-medium);
+  border-color: var(--border-medium);
+}
+
+.week-header {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.week-header h4 {
+  font-size: var(--font-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-dark);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.date-range {
+  font-size: var(--font-sm);
+  color: var(--text-muted);
+  font-weight: var(--font-weight-normal);
+}
+
+.week-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.metric-icon {
+  font-size: var(--font-xl);
+  filter: grayscale(20%);
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-label {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--spacing-xs) 0;
+  font-weight: var(--font-weight-medium);
+}
+
+.metric-value {
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-dark);
+}
+
+.no-workouts-message {
+  text-align: center;
+  color: var(--text-light);
+  font-style: italic;
+  padding: var(--spacing-lg) 0;
+  margin: 0;
+  font-size: var(--font-base);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .progress-container {
+    padding: var(--spacing-sm);
+  }
+
+  .progress-card {
+    padding: var(--spacing-3xl) var(--spacing-2xl);
+    border-radius: var(--radius-3xl);
+  }
+
+  .page-title {
+    font-size: var(--font-3xl);
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .weekly-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .week-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .month-input {
+    padding: var(--spacing-md) 0.875rem var(--spacing-md) 2.75rem;
+    min-width: 180px;
+  }
+
+  .calendar-icon {
+    left: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .progress-card {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .summary-card {
+    padding: 0.875rem;
+  }
+
+  .page-title {
+    font-size: var(--font-2xl);
+  }
+
+  .month-input {
+    min-width: 160px;
+  }
+}

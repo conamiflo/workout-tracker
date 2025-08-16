@@ -1,0 +1,140 @@
+<div class="workout-container">
+  <div class="workout-card">
+    <!-- Header -->
+    <div class="header-section">
+      <h2 class="workout-title">Workout History</h2>
+      <p class="workout-subtitle">Track your fitness journey</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading workouts...</p>
+    </div>
+
+    <!-- Workout Cards Grid -->
+    <div *ngIf="!isLoading && workouts.length > 0" class="workouts-grid">
+      <div *ngFor="let workout of workouts" class="workout-card-item">
+
+        <!-- Card Header -->
+        <div class="card-header">
+          <div class="exercise-info">
+            <span class="exercise-badge" [attr.data-type]="workout.exerciseType.toLowerCase()">
+              {{ workout.exerciseType }}
+            </span>
+            <span class="workout-date">{{ formatDate(workout.performedAt) }}</span>
+          </div>
+
+          <button class="delete-btn" (click)="deleteWorkout(workout.id)" title="Delete workout">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Card Content -->
+        <div class="card-content">
+
+          <!-- Primary Stats -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon duration">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="m12 6 0 6 4 2"></path>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value">{{ workout.durationMinutes }}</span>
+                <span class="stat-label">minutes</span>
+              </div>
+            </div>
+
+            <div class="stat-card" *ngIf="workout.calories > 0">
+              <div class="stat-icon calories">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value">{{ workout.calories }}</span>
+                <span class="stat-label">calories</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon intensity">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value">{{ workout.intensity }}/10</span>
+                <span class="stat-label">intensity</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon fatigue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="18" width="4" height="4"></rect>
+                  <rect x="8" y="14" width="4" height="8" opacity="0.5"></rect>
+                  <rect x="14" y="10" width="4" height="12" opacity="0.3"></rect>
+                  <rect x="20" y="6" width="4" height="16" opacity="0.1"></rect>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value">{{ workout.fatigue }}/10</span>
+                <span class="stat-label">fatigue</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="notes-section">
+            <div class="notes-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <path d="M14 2v6h6"></path>
+                <path d="M16 13H8"></path>
+                <path d="M16 17H8"></path>
+                <path d="M10 9H8"></path>
+              </svg>
+              Notes
+            </div>
+            <p class="notes-text">{{ workout.notes }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && workouts.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+        </svg>
+      </div>
+      <h3>No workouts found</h3>
+      <p>Add some workouts to get started with your fitness journey!</p>
+    </div>
+
+    <div class="pagination-section" *ngIf="!isLoading && workouts.length > 0">
+      <mat-paginator
+        [pageSizeOptions]="[6, 12, 18]"
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage"
+        showFirstLastButtons
+        (page)="onPageChange($event)"
+        class="custom-paginator">
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+<app-success-popup
+  [show]="showSuccessPopup"
+  [title]="'Successfully deleted a workout!'"
+  [message]="'Your workout has been successfully deleted.'"
+  (close)="onPopupClose()">
+</app-success-popup>

@@ -1,0 +1,243 @@
+<div class="workout-container">
+  <div class="workout-card">
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="page-title">New Workout</h1>
+          <p class="page-subtitle">Record your workout session</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Workout Form -->
+    <form [formGroup]="workoutForm" (ngSubmit)="onSubmit()" class="workout-form">
+
+      <!-- Global Error Message -->
+      <div *ngIf="globalError" class="global-error">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        {{ globalError }}
+      </div>
+
+      <!-- Exercise Type Field -->
+      <div class="form-group">
+        <label for="exerciseType" class="form-label">Exercise Type</label>
+        <div class="input-wrapper">
+            <select
+                    id="exerciseType"
+                    formControlName="exerciseType"
+                    class="form-input form-select"
+                    [ngClass]="{
+                    'error': exerciseType?.invalid && exerciseType?.touched,
+                    'valid': exerciseType?.valid && exerciseType?.touched
+                    }"
+            >
+                <option *ngFor="let type of exerciseTypes" [value]="type">
+                    {{ getExerciseTypeLabel(type) }}
+                </option>
+            </select>
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+          </svg>
+        </div>
+        <div *ngIf="getFieldError('exerciseType')" class="field-error">
+          {{ getFieldError('exerciseType') }}
+        </div>
+      </div>
+
+      <!-- Duration and Calories Row -->
+      <div class="form-row">
+        <!-- Duration Field -->
+        <div class="form-group">
+          <label for="durationMinutes" class="form-label">Duration (minutes)</label>
+          <div class="input-wrapper">
+            <input
+              id="durationMinutes"
+              type="number"
+              formControlName="durationMinutes"
+              class="form-input"
+              [ngClass]="{
+                'error': durationMinutes?.invalid && durationMinutes?.touched,
+                'valid': durationMinutes?.valid && durationMinutes?.touched
+              }"
+              placeholder="e.g. 30"
+              min="1"
+              max="1440"
+            >
+            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12,6 12,12 16,14"></polyline>
+            </svg>
+          </div>
+          <div *ngIf="getFieldError('durationMinutes')" class="field-error">
+            {{ getFieldError('durationMinutes') }}
+          </div>
+        </div>
+
+        <!-- Calories Field -->
+        <div class="form-group">
+          <label for="calories" class="form-label">Calories <span class="optional">(optional)</span></label>
+          <div class="input-wrapper">
+            <input
+              id="calories"
+              type="number"
+              formControlName="calories"
+              class="form-input"
+              [ngClass]="{
+                'error': calories?.invalid && calories?.touched,
+                'valid': calories?.valid && calories?.touched
+              }"
+              placeholder="e.g. 250"
+              min="0"
+              max="5000"
+            >
+            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+            </svg>
+          </div>
+          <div *ngIf="getFieldError('calories')" class="field-error">
+            {{ getFieldError('calories') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Intensity Field -->
+      <div class="form-group">
+        <label for="intensity" class="form-label">
+          Intensity Level
+          <span class="intensity-value">({{ workoutForm.get('intensity')?.value || 1 }}/10)</span>
+        </label>
+        <div class="slider-wrapper">
+          <input
+            id="intensity"
+            type="range"
+            formControlName="intensity"
+            class="form-slider"
+            min="1"
+            max="10"
+            step="1"
+          >
+          <div class="slider-labels">
+            <span>Low</span>
+            <span>Medium</span>
+            <span>High</span>
+          </div>
+        </div>
+        <div *ngIf="getFieldError('intensity')" class="field-error">
+          {{ getFieldError('intensity') }}
+        </div>
+      </div>
+
+      <!-- Fatigue Field -->
+      <div class="form-group">
+        <label for="fatigue" class="form-label">
+          Fatigue Level
+          <span class="fatigue-value">({{ workoutForm.get('fatigue')?.value || 1 }}/10)</span>
+        </label>
+        <div class="slider-wrapper">
+          <input
+            id="fatigue"
+            type="range"
+            formControlName="fatigue"
+            class="form-slider"
+            min="1"
+            max="10"
+            step="1"
+          >
+          <div class="slider-labels">
+            <span>Minimal</span>
+            <span>Moderate</span>
+            <span>Exhausted</span>
+          </div>
+        </div>
+        <div *ngIf="getFieldError('fatigue')" class="field-error">
+          {{ getFieldError('fatigue') }}
+        </div>
+      </div>
+
+      <!-- Performed At Field -->
+      <div class="form-group">
+        <label for="performedAt" class="form-label">Workout Date & Time</label>
+        <div class="input-wrapper">
+          <input
+            id="performedAt"
+            type="datetime-local"
+            formControlName="performedAt"
+            class="form-input"
+            [ngClass]="{
+              'error': performedAt?.invalid && performedAt?.touched,
+              'valid': performedAt?.valid && performedAt?.touched
+            }"
+            [max]="getCurrentDateTime()"
+          >
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
+        <div *ngIf="getFieldError('performedAt')" class="field-error">
+          {{ getFieldError('performedAt') }}
+        </div>
+      </div>
+
+      <!-- Notes Field -->
+      <div class="form-group">
+        <label for="notes" class="form-label">
+          Notes <span class="optional">(optional)</span>
+          <span class="char-count">{{ (workoutForm.get('notes')?.value || '').length }}/2000</span>
+        </label>
+        <div class="textarea-wrapper">
+          <textarea
+            id="notes"
+            formControlName="notes"
+            class="form-textarea"
+            [ngClass]="{
+              'error': notes?.invalid && notes?.touched,
+              'valid': notes?.valid && notes?.touched
+            }"
+            placeholder="Add any additional notes about your workout..."
+            rows="4"
+            maxlength="2000"
+          ></textarea>
+        </div>
+        <div *ngIf="getFieldError('notes')" class="field-error">
+          {{ getFieldError('notes') }}
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="goBack()"
+          [disabled]="isLoading"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="save-btn"
+          [disabled]="isLoading"
+          [ngClass]="{ 'loading': isLoading }"
+        >
+          <span *ngIf="!isLoading">Save Workout</span>
+          <div *ngIf="isLoading" class="spinner"></div>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-success-popup
+        [show]="showSuccessPopup"
+        [title]="'Successfully entered a workout!'"
+        [message]="'Your workout has been created successfully.'"
+        (close)="onPopupClose()">
+</app-success-popup>
