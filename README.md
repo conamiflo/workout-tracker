@@ -2,6 +2,12 @@
 
 **Workout Tracker** is a simple full-stack web application that allows users to log, monitor, and analyze their workouts.  
 
+## 🎥 Demo
+Check out the demo video to see the app in action:  
+[![Workout Tracker Demo](https://img.youtube.com/vi/CMBcKEx_xfM/0.jpg)](https://youtu.be/CMBcKEx_xfM)
+
+---
+
 ## 🎯 Features
 
 ### 1. **Authentication & Registration**
